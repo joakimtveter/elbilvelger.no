@@ -72,6 +72,11 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    companies: Company;
+    brands: Brand;
+    models: Model;
+    variants: Variant;
+    countries: Country;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -88,6 +93,11 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    companies: CompaniesSelect<false> | CompaniesSelect<true>;
+    brands: BrandsSelect<false> | BrandsSelect<true>;
+    models: ModelsSelect<false> | ModelsSelect<true>;
+    variants: VariantsSelect<false> | VariantsSelect<true>;
+    countries: CountriesSelect<false> | CountriesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -729,6 +739,91 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "companies".
+ */
+export interface Company {
+  id: string;
+  name: string;
+  shortName: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brands".
+ */
+export interface Brand {
+  id: string;
+  name: string;
+  company?: (string | null) | Company;
+  country?: (string | null) | Country;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Name of the countries of the countries.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries".
+ */
+export interface Country {
+  id: string;
+  name: string;
+  /**
+   * ISO 3166-kode
+   */
+  code: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "models".
+ */
+export interface Model {
+  id: string;
+  name: string;
+  brand: string | Brand;
+  body?: ('sedan' | 'stasjonsvogn' | 'suv' | 'pickup' | 'varebil' | 'cabriolet' | 'crossover' | 'flerbruksbil') | null;
+  'starting-price'?: {
+    price?: number | null;
+    updated?: string | null;
+  };
+  dimensions?: {
+    length?: number | null;
+    width?: number | null;
+    height?: number | null;
+    wheelbase?: number | null;
+  };
+  variants?: (string | Variant)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variants".
+ */
+export interface Variant {
+  id: string;
+  name: string;
+  fullName: string;
+  /**
+   * Km WLTP
+   */
+  range: number;
+  /**
+   * kWh
+   */
+  batteryCapacity: number;
+  /**
+   * kWh
+   */
+  usableBatteryCapacity: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -919,6 +1014,26 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'companies';
+        value: string | Company;
+      } | null)
+    | ({
+        relationTo: 'brands';
+        value: string | Brand;
+      } | null)
+    | ({
+        relationTo: 'models';
+        value: string | Model;
+      } | null)
+    | ({
+        relationTo: 'variants';
+        value: string | Variant;
+      } | null)
+    | ({
+        relationTo: 'countries';
+        value: string | Country;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1276,6 +1391,76 @@ export interface UsersSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "companies_select".
+ */
+export interface CompaniesSelect<T extends boolean = true> {
+  name?: T;
+  shortName?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brands_select".
+ */
+export interface BrandsSelect<T extends boolean = true> {
+  name?: T;
+  company?: T;
+  country?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "models_select".
+ */
+export interface ModelsSelect<T extends boolean = true> {
+  name?: T;
+  brand?: T;
+  body?: T;
+  'starting-price'?:
+    | T
+    | {
+        price?: T;
+        updated?: T;
+      };
+  dimensions?:
+    | T
+    | {
+        length?: T;
+        width?: T;
+        height?: T;
+        wheelbase?: T;
+      };
+  variants?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "variants_select".
+ */
+export interface VariantsSelect<T extends boolean = true> {
+  name?: T;
+  fullName?: T;
+  range?: T;
+  batteryCapacity?: T;
+  usableBatteryCapacity?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries_select".
+ */
+export interface CountriesSelect<T extends boolean = true> {
+  name?: T;
+  code?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
